@@ -10,7 +10,7 @@ const CASE_STUDIES = [
     tagline: 'Removing the Barrier Between Partner Platform Users and Content',
     timeline: 'Mar–Jun 2023',
     tags: ['Cross-company Integration', 'User Growth', 'Technical Complexity', 'B2C Streaming'],
-    metric: 'DAU +55%  ·  Viewers +50%  ·  View Count +55%',
+    metric: 'DAU >55%  ·  Viewers >50%  ·  View Count >55%',
     inProgress: false,
     content: `# Case Study 01: Auto Login
 ## Removing the Barrier Between Partner Platform Users and Content
@@ -237,7 +237,7 @@ This analysis grounded the iOS in-app investment decision in evidence — turnin
     tagline: 'Bridging a New Content Partnership Model with a Viable Payment Architecture',
     timeline: 'Jun–Dec 2024',
     tags: ['Monetization', '0-to-1', 'Business Partnership', 'Paywall Design'],
-    metric: 'Revenue grew meaningfully vs. baseline  ·  Hundreds of orders in 6-week pilot',
+    metric: 'Revenue ~+10% (micro-drama)  ·  200+ orders (film) in 6-week pilot',
     inProgress: false,
     content: `# Case Study 03: Series Bundle Voucher
 ## Bridging a New Content Partnership Model with a Viable Payment Architecture
@@ -255,7 +255,7 @@ The platform's micro-drama catalog was originally available exclusively under SV
 
 I led the end-to-end delivery of the Series Bundle Voucher: a 30-day time-limited access pass that unlocks an entire series in a single purchase. Designed in collaboration with backend engineers and design, the voucher served as a transitional payment architecture — satisfying the studio's requirement to monetize content outside SVOD while remaining within what the team could realistically ship. The project also required upfront infrastructure work to support vertical video playback across all platforms before the payment layer could be built.
 
-The feature shipped in December 2024. A subsequent pilot validated commercial demand: micro-drama revenue grew meaningfully, with hundreds of voucher orders generated across both micro-drama and film titles over a six-week test period.
+The feature shipped in December 2024. A subsequent six-week pilot validated commercial demand: micro-drama revenue grew roughly 10% versus baseline, and film titles generated 200+ voucher orders through a purchase channel that hadn't existed before.
 
 ---
 
@@ -325,8 +325,8 @@ Rather than scoping a new frontend feature, I worked with Content Operations to 
 
 | Content Type | Model | Result |
 |---|---|---|
-| Micro-dramas | Voucher replaces SVOD | Revenue grew meaningfully vs. baseline |
-| Film titles | Voucher as new purchase channel | Hundreds of orders across the pilot period |
+| Micro-dramas | Voucher replaces SVOD | Revenue ~+10% vs. baseline |
+| Film titles | Voucher as new purchase channel | 200+ orders across the pilot period |
 
 ### What the results established
 
