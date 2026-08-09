@@ -1,0 +1,6 @@
+.DS_Store
+.claude/
+
+# 案例原稿與草稿（網站執行不需要，app.js 已內嵌全文）
+case_study_*.md
+*.local.js
