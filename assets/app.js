@@ -5,6 +5,10 @@
    and is fetched at runtime. The .md file is the single source
    of truth — do not duplicate content into this file.
 
+   `slug` drives the URL hash; `file` is only used to fetch the markdown.
+   Filenames stay numbered for internal filing; the number is not shown
+   to readers and array order is free to change.
+
    Local preview needs a server (fetch fails on file://):
      python3 -m http.server 8791
 
@@ -16,7 +20,7 @@
 const CASE_STUDIES = [
   {
     file: 'case_study_01_auto_login.md',
-    id: '01',
+    slug: 'auto-login',
     title: 'Auto Login',
     tagline: 'Removing the Barrier Between Partner Platform Users and Content',
     timeline: 'Mar–Jun 2023',
@@ -25,23 +29,23 @@ const CASE_STUDIES = [
     inProgress: false,
   },
   {
-    file: 'case_study_02_fast_pip.md',
-    id: '02',
-    title: 'FAST PiP',
-    tagline: 'Validating Investment with Data Before Committing to High-Cost Development',
-    timeline: 'Jan–Mar 2025',
-    tags: ['ROI Decision-Making', 'Data-Driven', 'New Business', 'FAST Streaming'],
-    metric: 'Android launched on schedule  ·  iOS investment case validated',
-    inProgress: false,
-  },
-  {
     file: 'case_study_03_series_bundle_voucher.md',
-    id: '03',
+    slug: 'series-bundle-voucher',
     title: 'Series Bundle Voucher',
     tagline: 'Bridging a New Content Partnership Model with a Viable Payment Architecture',
     timeline: 'Jun–Dec 2024',
     tags: ['Monetization', '0-to-1', 'Business Partnership', 'Paywall Design'],
     metric: 'Revenue +10.1% (micro-drama)  ·  250+ orders (film) in 6-week pilot',
+    inProgress: false,
+  },
+  {
+    file: 'case_study_02_fast_pip.md',
+    slug: 'fast-pip',
+    title: 'FAST PiP',
+    tagline: 'Validating Investment with Data Before Committing to High-Cost Development',
+    timeline: 'Jan–Mar 2025',
+    tags: ['ROI Decision-Making', 'Data-Driven', 'New Business', 'FAST Streaming'],
+    metric: 'Android launched on schedule  ·  iOS investment case validated',
     inProgress: false,
   },
 ];
@@ -63,8 +67,7 @@ function renderIndex() {
   if (!grid) return;
 
   grid.innerHTML = CASE_STUDIES.map((cs) => `
-    <a class="case-card" href="case-study.html#${esc(cs.file)}" aria-label="Read case study: ${esc(cs.title)}">
-      <div class="card-number">${esc(cs.id)}</div>
+    <a class="case-card" href="case-study.html#${esc(cs.slug)}" aria-label="Read case study: ${esc(cs.title)}">
       <div class="card-title">${esc(cs.title)}</div>
       <div class="card-tagline">${esc(cs.tagline)}</div>
       <div class="card-timeline">${esc(cs.timeline)}${cs.inProgress ? ' <span class="card-status">· In progress</span>' : ''}</div>
@@ -97,7 +100,7 @@ async function renderCaseStudy() {
 
   const filename = window.location.hash.slice(1);
 
-  const cs = CASE_STUDIES.find((c) => c.file === filename);
+  const cs = CASE_STUDIES.find((c) => c.slug === filename);
   if (!cs) {
     article.innerHTML = '<p style="color:var(--muted);padding:4rem 0;">Case study not found.</p>';
     return;
@@ -124,7 +127,7 @@ async function renderCaseStudy() {
   }
 
   // 這次載入完成前，使用者可能已經切到另一篇（hashchange）
-  if (window.location.hash.slice(1) !== cs.file) return;
+  if (window.location.hash.slice(1) !== cs.slug) return;
 
   const hrIndex = content.indexOf('\n---\n');
   const headerBlock = hrIndex !== -1 ? content.slice(0, hrIndex) : '';
@@ -137,7 +140,67 @@ async function renderCaseStudy() {
   article.innerHTML = marked.parse(bodyBlock, { gfm: true, breaks: false });
 
   postProcess(article, cs);
+  buildToc(article);
   renderCsNav(idx);
+}
+
+/* ---- On-this-page nav + reading progress ----
+   目錄用 button 而非 <a href="#...">：本站以 hash 做路由，
+   改動 hash 會觸發 hashchange 並重新渲染整頁。 */
+function buildToc(container) {
+  document.querySelector('.cs-toc')?.remove();
+  document.querySelector('.reading-progress')?.remove();
+
+  const headings = Array.from(container.querySelectorAll('h2'));
+  if (headings.length < 3) return;
+
+  headings.forEach((h, i) => { if (!h.id) h.id = 'section-' + i; });
+
+  const nav = document.createElement('nav');
+  nav.className = 'cs-toc';
+  nav.setAttribute('aria-label', 'On this page');
+  nav.innerHTML =
+    '<div class="cs-toc-label">On this page</div><ol class="cs-toc-list">' +
+    headings.map((h, i) =>
+      `<li><button type="button" class="cs-toc-link" data-i="${i}">${esc(h.textContent)}</button></li>`
+    ).join('') +
+    '</ol>';
+  document.body.appendChild(nav);
+
+  const bar = document.createElement('div');
+  bar.className = 'reading-progress';
+  bar.innerHTML = '<span></span>';
+  document.body.appendChild(bar);
+  const fill = bar.firstElementChild;
+
+  const links = Array.from(nav.querySelectorAll('.cs-toc-link'));
+  links.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      headings[Number(btn.dataset.i)].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+    fill.style.transform = `scaleX(${pct})`;
+
+    let activeIdx = 0;
+    headings.forEach((h, i) => {
+      if (h.getBoundingClientRect().top <= 120) activeIdx = i;
+    });
+    links.forEach((btn, i) => btn.classList.toggle('is-active', i === activeIdx));
+  };
+
+  const onScroll = () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
 }
 
 function parseMetadata(headerBlock) {
@@ -165,7 +228,6 @@ function buildHeader(cs, meta) {
     </div>` : '';
 
   return `
-    <div class="cs-number">Case Study ${esc(cs.id)}</div>
     <h1 class="cs-title">${esc(cs.title)}</h1>
     <p class="cs-tagline">${esc(cs.tagline)}</p>
     <div class="cs-meta-grid">
@@ -190,6 +252,12 @@ function buildHeader(cs, meta) {
 }
 
 function postProcess(container, cs) {
+  // 內文第一個 blockquote 是案例摘要，給它專屬樣式（不要和使用者引言混淆）
+  const first = container.firstElementChild;
+  if (first && first.tagName === 'BLOCKQUOTE') {
+    first.classList.add('cs-summary');
+  }
+
   container.querySelectorAll('h3').forEach((h3) => {
     const m = h3.textContent.match(/^(\d{2})\s*[—–-]\s*(.+)/);
     if (m) {
@@ -258,13 +326,13 @@ function renderCsNav(idx) {
   navEl.innerHTML = `
     <div class="cs-nav-inner">
       ${prev
-        ? `<a class="cs-nav-link prev" href="case-study.html#${esc(prev.file)}">
+        ? `<a class="cs-nav-link prev" href="case-study.html#${esc(prev.slug)}">
              <span>← Previous</span>
              ${esc(prev.title)}
            </a>`
         : '<span></span>'}
       ${next
-        ? `<a class="cs-nav-link next" href="case-study.html#${esc(next.file)}">
+        ? `<a class="cs-nav-link next" href="case-study.html#${esc(next.slug)}">
              <span>Next →</span>
              ${esc(next.title)}
            </a>`

@@ -764,3 +764,124 @@ footer .container {
   .cs-body th,
   .cs-body td { padding: calc(var(--sp) * 1) calc(var(--sp) * 1.5); }
 }
+
+/* Case study summary — the first blockquote in the body.
+   Deliberately styled apart from user-quote blockquotes:
+   sans-serif, not italic, accent-tinted panel. */
+.cs-body blockquote.cs-summary {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  margin: 0 0 calc(var(--sp) * 5) 0;
+  padding: calc(var(--sp) * 2.5) calc(var(--sp) * 3.5);
+}
+
+.cs-body blockquote.cs-summary p {
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* =====================================================
+   On-this-page nav + reading progress
+   ===================================================== */
+
+/* 讀取進度條：貼在固定導覽列下緣 */
+.reading-progress {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 99;
+  background: transparent;
+  pointer-events: none;
+}
+
+.reading-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.08s linear;
+}
+
+/* 目錄：放在內文右側的天然留白區，僅寬螢幕顯示 */
+.cs-toc {
+  display: none;
+}
+
+.cs-body h2 {
+  scroll-margin-top: 88px;
+}
+
+@media (min-width: 1180px) {
+  .cs-toc {
+    display: block;
+    position: fixed;
+    top: 128px;
+    left: calc(50% + 214px);
+    width: 250px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    z-index: 50;
+  }
+
+  .cs-toc-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: calc(var(--sp) * 1.5);
+  }
+
+  .cs-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .cs-toc-list li {
+    margin: 0;
+  }
+
+  .cs-toc-link {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    padding: calc(var(--sp) * 0.75) calc(var(--sp) * 1.75);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .cs-toc-link:hover {
+    color: var(--secondary);
+  }
+
+  .cs-toc-link.is-active {
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+
+  .cs-toc-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reading-progress span { transition: none; }
+}

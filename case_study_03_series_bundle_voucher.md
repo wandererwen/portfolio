@@ -8,6 +8,8 @@
 
 ---
 
+> **A 30-day series unlock voucher that let the platform monetize per title without building a full TVOD system: micro-drama revenue +10.1% and 250+ film voucher orders across a six-week pilot.**
+
 ## Overview
 
 The platform's micro-drama catalog was originally available exclusively under SVOD subscription. In mid-2024, the content and rights team brought a new studio partnership to the table — one that required per-episode purchase (TVOD) as a condition of the deal, a model that didn't exist in the platform's payment infrastructure at the time.

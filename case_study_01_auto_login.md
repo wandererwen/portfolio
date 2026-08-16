@@ -9,6 +9,8 @@
 
 ---
 
+> **Auto login for a cable TV partner's set-top box users, delivered end to end across two companies' engineering teams with no integration precedent: DAU +57%, Viewers +55%, View Count +58% four weeks post-launch (p<0.001).**
+
 ## Overview
 
 A major cable TV operator — a platform whose subscribers skew older — required users to scan a QR code with their mobile phone to watch content on their set-top boxes. This multi-step process created unnecessary friction and drove users away before they even started watching.

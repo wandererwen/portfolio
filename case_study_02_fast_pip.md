@@ -2,11 +2,13 @@
 ## Validating Investment with Data Before Committing to High-Cost Development
 
 **Role:** Product Manager (Sole PM)
-**Team:** iOS, Android, UIUX, QA, Data
+**Team:** iOS, Android, Design, QA, Data
 **Timeline:** January – March 2025
 **Tags:** ROI Decision-Making · New Business · Data-Driven · FAST Streaming
 
 ---
+
+> **Picture-in-picture extended to the FAST player: Android delivered on schedule, while a behavioural analysis of existing VOD data turned a high-cost iOS rebuild from a gut call into an evidenced investment decision.**
 
 ## Overview
 
