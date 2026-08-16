@@ -159,10 +159,20 @@ function buildToc(container) {
   const nav = document.createElement('nav');
   nav.className = 'cs-toc';
   nav.setAttribute('aria-label', 'On this page');
+  // 版面關鍵屬性用 inline 兜底：萬一 style.css 沒載到，
+  // 目錄也不會變成一般區塊掉到 footer 下面。
+  nav.style.position = 'fixed';
+  // 目錄標籤取逗號前的部分：章節標題可以完整，目錄只要能辨識。
+  // 縮短後每項都是單行，掃讀快很多，右緣也不會太參差。
+  const tocLabel = (text) => {
+    const short = text.split(/[,，]/)[0].trim();
+    return short.length >= 3 ? short : text.trim();
+  };
+
   nav.innerHTML =
     '<div class="cs-toc-label">On this page</div><ol class="cs-toc-list">' +
     headings.map((h, i) =>
-      `<li><button type="button" class="cs-toc-link" data-i="${i}">${esc(h.textContent)}</button></li>`
+      `<li><button type="button" class="cs-toc-link" data-i="${i}">${esc(tocLabel(h.textContent))}</button></li>`
     ).join('') +
     '</ol>';
   document.body.appendChild(nav);
@@ -180,9 +190,24 @@ function buildToc(container) {
     });
   });
 
+  const TOC_MIN_WIDTH = 1180;
+  // 目錄只在「正在讀內文」時出現：
+  // 還在看檔頭時不顯示（避免蓋住 Role/Team/Timeline/Context 欄位），
+  // 讀完內文捲到頁尾導覽時也收起來。
+  const applyVisibility = () => {
+    const wideEnough = window.innerWidth >= TOC_MIN_WIDTH;
+    nav.style.display = wideEnough ? '' : 'none';
+    if (!wideEnough) { nav.classList.remove('is-visible'); return; }
+    const r = container.getBoundingClientRect();
+    const reading = r.top <= 140 && r.bottom >= 240;
+    nav.classList.toggle('is-visible', reading);
+  };
+  applyVisibility();
+
   let ticking = false;
   const update = () => {
     ticking = false;
+    applyVisibility();
 
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const pct = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
