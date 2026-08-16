@@ -4,7 +4,7 @@
 **Role:** Product Manager (Sole PM)
 **Team:** Frontend, Backend, Design, Content Operations, Data
 **Timeline:** June – December 2024
-**Tags:** Monetization · 0-to-1 · Business Partnership · Paywall Design · B2C Streaming
+**Tags:** Monetization · 0-to-1 · Business Partnership · Paywall Design
 
 ---
 

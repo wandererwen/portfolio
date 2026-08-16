@@ -18,13 +18,29 @@
    ===================================================== */
 
 const CASE_STUDIES = [
+  /* Case 04 待上線：功能全量上線確認後把下面這段取消註解。
+     case_study_04_homepage_preference_filter.md 已在 repo 目錄下但未 commit，
+     所以這段一定要跟那個 .md 同一次 commit，否則線上會 fetch 到 404。
+     本機要預覽 04 就先取消註解，commit 前記得改回來。 */
+  /*
+  {
+    file: 'case_study_04_homepage_preference_filter.md',
+    slug: 'homepage-preference-filter',
+    title: 'Homepage Preference Filter',
+    tagline: 'Shipping a Constrained Solution While Building the Case for Segmentation',
+    timeline: 'Apr–Aug 2026',
+    tags: ['Content Discovery', 'A/B Testing', 'Constraint-Driven Delivery', 'Disagree & Commit'],
+    metric: '+1.60pp home-to-view conversion (p=0.012)  ·  6-week build',
+    inProgress: false,
+  },
+  */
   {
     file: 'case_study_01_auto_login.md',
     slug: 'auto-login',
     title: 'Auto Login',
     tagline: 'Removing the Barrier Between Partner Platform Users and Content',
     timeline: 'Mar–Jun 2023',
-    tags: ['Cross-company Integration', 'User Growth', 'Technical Complexity', 'B2C Streaming'],
+    tags: ['Cross-company Integration', 'User Growth', 'Technical Complexity'],
     metric: 'DAU +57%  ·  Viewers +55%  ·  View Count +58%',
     inProgress: false,
   },
@@ -44,7 +60,7 @@ const CASE_STUDIES = [
     title: 'FAST PiP',
     tagline: 'Validating Investment with Data Before Committing to High-Cost Development',
     timeline: 'Jan–Mar 2025',
-    tags: ['ROI Decision-Making', 'Data-Driven', 'New Business', 'FAST Streaming'],
+    tags: ['ROI Decision-Making', 'New Business', 'Data-Driven', 'FAST Streaming'],
     metric: 'Android launched on schedule  ·  iOS investment case validated',
     inProgress: false,
   },
@@ -102,7 +118,19 @@ async function renderCaseStudy() {
 
   const cs = CASE_STUDIES.find((c) => c.slug === filename);
   if (!cs) {
-    article.innerHTML = '<p style="color:var(--muted);padding:4rem 0;">Case study not found.</p>';
+    // 這條路徑也會從 hashchange 進來（前一篇已經渲染好了），
+    // 所以要把上一篇留下的標題、頁尾導覽、目錄、進度條一起清掉，
+    // 否則畫面會變成「A 篇的標題 + 找不到」。
+    document.title = 'Wen Peng — Product Manager';
+    document.getElementById('cs-header').innerHTML = '';
+    const navEl = document.getElementById('cs-nav');
+    if (navEl) navEl.innerHTML = '';
+    document.querySelector('.cs-toc')?.remove();
+    document.querySelector('.reading-progress')?.remove();
+    article.innerHTML =
+      '<p style="color:var(--muted);padding:4rem 0;">' +
+      'Case study not found. <a href="index.html">Back to the overview</a>.' +
+      '</p>';
     return;
   }
 
@@ -334,10 +362,38 @@ function postProcess(container, cs) {
   }
 }
 
+/* 高亮「結果欄」：靠表頭文字判斷是哪一欄，而不是固定第 2 欄。
+   固定第 2 欄在兩欄表沒問題，但欄位一多就會highlight錯——
+   例如 A/B 表的第 2 欄是對照組，highlight 它會讀成那是成果。 */
+const RESULT_HEADER_PATTERNS = [
+  /^(Δ|delta|change|lift|diff)/i,   // 差值優先：有差值欄時它就是結論
+  /^(growth|result|impact|outcome)/i,
+  /(conversion|rate|revenue|orders)/i,
+];
+
+function resultColumnIndex(table) {
+  const heads = Array.from(table.querySelectorAll('thead th')).map((th) => th.textContent.trim());
+  for (const pattern of RESULT_HEADER_PATTERNS) {
+    const i = heads.findIndex((h, idx) => idx > 0 && pattern.test(h));
+    if (i !== -1) return i;
+  }
+  return 1; // 認不出來就沿用舊行為
+}
+
+/* .metric-val 是等寬＋accent 色，適合短數值。整句話套上去會變成
+   一段金色等寬散文，比不套還吵，所以長格子跳過。 */
+function isShortValue(text) {
+  return text.trim().length <= 24;
+}
+
 function styleResultTable(table) {
+  const col = resultColumnIndex(table);
   table.querySelectorAll('tr').forEach((row) => {
     const cells = row.querySelectorAll('td');
-    if (cells.length >= 2) cells[1].classList.add('metric-val');
+    if (cells.length <= col) return;
+    // 短格子：整格套色。長格子（結果寫成一句話）：只挑裡面的粗體數字，
+    // 句子本身維持內文樣式。
+    cells[col].classList.add(isShortValue(cells[col].textContent) ? 'metric-val' : 'metric-inline');
   });
 }
 

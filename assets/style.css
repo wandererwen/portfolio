@@ -897,3 +897,15 @@ footer .container {
   .reading-progress span { transition: none; }
   .cs-toc { transition: none; }
 }
+
+/* 結果欄的數值用 accent 色。短格子整格套 .metric-val；
+   結果寫成一句話時只套裡面的粗體數字（.metric-inline），
+   整句染色會變成一段金色等寬散文。
+   兩者都要蓋掉 .cs-body strong 的 color。 */
+.cs-body td.metric-val strong { color: inherit; }
+
+.cs-body td.metric-inline strong {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.875rem;
+}

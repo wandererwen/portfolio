@@ -5,7 +5,7 @@
 **Team:** 10+ cross-functional (Android, Web, Backend, Design, QA, Data)
 **Timeline:** March – June 2023
 **Context:** 6 weeks into role
-**Tags:** Cross-company Integration · User Growth · Technical Complexity · B2C Streaming
+**Tags:** Cross-company Integration · User Growth · Technical Complexity
 
 ---
 
