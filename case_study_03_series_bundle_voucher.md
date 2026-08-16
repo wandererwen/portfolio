@@ -14,7 +14,7 @@ The platform's micro-drama catalog was originally available exclusively under SV
 
 I led the end-to-end delivery of the Series Bundle Voucher: a 30-day time-limited access pass that unlocks an entire series in a single purchase. Designed in collaboration with backend engineers and design, the voucher served as a transitional payment architecture — satisfying the studio's requirement to monetize content outside SVOD while remaining within what the team could realistically ship. The project also required upfront infrastructure work to support vertical video playback across all platforms before the payment layer could be built.
 
-The feature shipped in December 2024. A subsequent six-week pilot validated commercial demand: micro-drama revenue grew roughly 10% versus baseline, and film titles generated 200+ voucher orders through a purchase channel that hadn't existed before.
+The feature shipped in December 2024. A subsequent six-week pilot validated commercial demand: micro-drama revenue grew 10.1% versus baseline, and film titles generated 250+ voucher orders through a purchase channel that hadn't existed before.
 
 ---
 
@@ -84,8 +84,8 @@ Rather than scoping a new frontend feature, I worked with Content Operations to 
 
 | Content Type | Model | Result |
 |---|---|---|
-| Micro-dramas | Voucher replaces SVOD | Revenue ~+10% vs. baseline |
-| Film titles | Voucher as new purchase channel | 200+ orders across the pilot period |
+| Micro-dramas | Voucher replaces SVOD | Revenue **+10.1%** vs. baseline |
+| Film titles | Voucher as new purchase channel | **250+ orders** across the pilot period |
 
 ### What the results established
 

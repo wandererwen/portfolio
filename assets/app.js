@@ -7,6 +7,10 @@
 
    Local preview needs a server (fetch fails on file://):
      python3 -m http.server 8791
+
+   NOTE: `tagline`, `timeline` and `metric` below are card-level
+   summaries and are NOT read from the .md — update them here too
+   whenever those change in the markdown.
    ===================================================== */
 
 const CASE_STUDIES = [
@@ -17,7 +21,7 @@ const CASE_STUDIES = [
     tagline: 'Removing the Barrier Between Partner Platform Users and Content',
     timeline: 'Mar–Jun 2023',
     tags: ['Cross-company Integration', 'User Growth', 'Technical Complexity', 'B2C Streaming'],
-    metric: 'DAU >55%  ·  Viewers >50%  ·  View Count >55%',
+    metric: 'DAU +57%  ·  Viewers +55%  ·  View Count +58%',
     inProgress: false,
   },
   {
@@ -37,7 +41,7 @@ const CASE_STUDIES = [
     tagline: 'Bridging a New Content Partnership Model with a Viable Payment Architecture',
     timeline: 'Jun–Dec 2024',
     tags: ['Monetization', '0-to-1', 'Business Partnership', 'Paywall Design'],
-    metric: 'Revenue ~+10% (micro-drama)  ·  200+ orders (film) in 6-week pilot',
+    metric: 'Revenue +10.1% (micro-drama)  ·  250+ orders (film) in 6-week pilot',
     inProgress: false,
   },
 ];

@@ -15,7 +15,7 @@ A major cable TV operator — a platform whose subscribers skew older — requir
 
 I led the end-to-end delivery of Auto Login: a feature that lets partner platform users open the TV app and start watching immediately, without any manual login step. The project involved integrating two authentication systems across two independent engineering teams — with no prior integration blueprint to follow.
 
-**Result:** DAU grew over 55%, Viewers over 50%, View Count over 55% — measured four weeks post-launch (p<0.001).
+**Result:** DAU +57%, Viewers +55%, View Count +58% — measured four weeks post-launch (p<0.001).
 
 ---
 
@@ -73,9 +73,9 @@ After launch, I produced documentation for the partner platform's team covering 
 ### Core metrics (4-week post-launch comparison)
 | Metric | Growth | Significance |
 |--------|--------|--------------|
-| DAU | >55% | p<0.001 |
-| Viewers | >50% | p<0.001 |
-| View Count | >55% | p<0.001 |
+| DAU | **+57%** | p<0.001 |
+| Viewers | **+55%** | p<0.001 |
+| View Count | **+58%** | p<0.001 |
 
 ### Trend health
 Growth held steady through weeks 3–4 after controlling for public holiday effects — confirming structural uplift rather than a short-term spike.
